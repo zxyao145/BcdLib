@@ -1,0 +1,33 @@
+﻿@page "/"
+
+<h1>Hello, world!</h1>
+
+Welcome to your new app.
+
+<button @onclick="OpenABcdForm">OpenABForm</button>
+
+
+@code
+{
+    BcdForm bcdFormTest = null;
+
+    async void OpenABcdForm()
+    {
+        if (bcdFormTest == null)
+        {
+            bcdFormTest = new BcdForm1();
+            await bcdFormTest.ShowAsync();
+        }
+        else
+        {
+            if (bcdFormTest.Visible)
+            {
+                await bcdFormTest.CloseAsync();
+            }
+            else
+            {
+                await bcdFormTest.ShowAsync();
+            }
+        }
+    }
+}

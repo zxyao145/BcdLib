@@ -1,0 +1,65 @@
+﻿<div class="bcd-form-container">
+    <div>
+        @if (_forms != null)
+        {
+            @foreach (var form in _forms)
+            {
+                <div id="@form.Name" @key="form" class="bcd-form-root" style="@form.GetStyle()">
+                    <div class="bcd-form-mask"></div>
+                    <div class="bcd-form-wrap" role="dialog" style="">
+                        <div role="document" class="bcd-form" style="width: 520px;">
+                            <div class="bcd-form-content">
+                                @if (form.EnableHeader)
+                                {
+                                    <div class="bcd-form-header @form.GetHeaderCls()">
+                                        <div class="bcd-form-title">@form.Title</div>
+                                        <div class="bcd-form-header-tools">
+                                            @if (form.MinimizeBox || form.MaximizeBox)
+                                            {
+                                                <button disabled="@(!form.MinimizeBox)">
+                                                    <span class="bcd-form-header-tool bcd-form-min">
+                                                        <svg t="1610693610934"
+                                                             focusable="false" width="1em" height="1em" fill="currentColor" aria-hidden="true"
+                                                             class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4799">
+                                                            <path d="M91.428571 457.142857h841.142858v109.714286h-841.142858z" p-id="4800"></path>
+                                                        </svg>
+                                                    </span>
+                                                </button>
+
+                                                <button disabled="@(!form.MaximizeBox)">
+                                                    <span class="bcd-form-header-tool bcd-form-max">
+                                                        <svg t="1610693558361"
+                                                             focusable="false" width="1em" height="1em" fill="currentColor" aria-hidden="true"
+                                                             class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4667">
+                                                            <path d="M930.909091 32.581818 93.090909 32.581818c-23.272727 0-46.545455 18.618182-46.545455 46.545455l0 837.818182c0 23.272727 18.618182 46.545455 46.545455 46.545455l837.818182 0c23.272727 0 46.545455-18.618182 46.545455-46.545455l0-837.818182C977.454545 51.2 958.836364 32.581818 930.909091 32.581818zM884.363636 870.4 139.636364 870.4l0-744.727273 744.727273 0L884.363636 870.4z" p-id="4668"></path>
+                                                        </svg>
+                                                    </span>
+                                                </button>
+                                            }
+
+                                            <button @onclick="@(async () => { await CloseFormAsync(form); })">
+                                                <span class="bcd-form-header-tool bcd-form-close">
+                                                    <svg t="1610695030046"
+                                                         focusable="false" width="1em" height="1em" fill="currentColor" aria-hidden="true"
+                                                         class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="9043">
+                                                        <path d="M521.694 449.297L111.41 39.014a51.2 51.2 0 1 0-72.43 72.363l410.282 410.317L38.98 932.01a51.2 51.2 0 1 0 72.397 72.396l410.317-410.282 410.317 410.282a51.2 51.2 0 1 0 72.396-72.362L594.125 521.694l410.282-410.283a51.2 51.2 0 1 0-72.396-72.397L521.728 449.297z" p-id="9044"></path>
+                                                    </svg>
+                                                </span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                }
+
+
+                                <div class="bcd-form-body">
+                                    @_form2Compontents[form]
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            }
+        }
+    </div>
+</div>
