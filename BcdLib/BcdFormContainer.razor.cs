@@ -74,7 +74,7 @@ namespace BcdLib
             }
         }
 
-        static async Task CloseFormAsync(BcdForm form)
+        internal static async Task CloseFormAsync(BcdForm form)
         {
             await form.CloseAsync();
         }

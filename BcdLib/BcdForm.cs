@@ -14,6 +14,57 @@ namespace BcdLib
         LeftBottom = 0,
         RightBottom = 1
     }
+
+    public enum FormState
+    {
+        Normal = 0,
+        Min = 1,
+        Max = 2
+    }
+
+    internal static class BcdHelper
+    {
+        public static bool IsNormal(this FormState state)
+        {
+            return state == FormState.Normal;
+        }
+
+        public static bool IsMin(this FormState state)
+        {
+            return state == FormState.Min;
+        }
+
+        public static bool IsMax(this FormState state)
+        {
+            return state == FormState.Max;
+        }
+
+
+        public static string ToCls(this FormState state)
+        {
+            switch (state)
+            {
+                case FormState.Min:
+                    return $"{BcdForm.Prefix}-min";
+                case FormState.Max:
+                    return $"{BcdForm.Prefix}-max";
+                default:
+                    return "";
+            }
+        }
+
+        public static string ToCls(this MinPosition state)
+        {
+            switch (state)
+            {
+                case MinPosition.RightBottom:
+                    return $"min-rb";
+                default:
+                    return $"min-lb";
+            }
+        }
+    }
+
     public abstract class BcdForm: ComponentBase,IDisposable
     {
         //private static readonly FieldInfo _innerRenderHandleFieldInfo;
@@ -213,61 +264,98 @@ namespace BcdLib
         #region min max
 
         /// <summary>
+        /// last form state
+        /// </summary>
+        private FormState LastState { get; set; }
+
+        private FormState _formState;
+
+        /// <summary>
         /// form max min or normal
         /// </summary>
-        private string FormState { get; set; }
+        private FormState FormState
+        {
+            get => _formState;
+            set
+            {
+                LastState = _formState;
+                _formState = value;
+            }
+        }
 
         internal string GetFormState()
         {
-            if (IsMin)
-            {
-                return $"{FormState} min-" + (MinPosition == MinPosition.LeftBottom ? "lb" : "rb");
-            }
-
-            return FormState;
+            return IsMin() 
+                ? $"{FormState.ToCls()} {MinPosition.ToCls()}"
+                : FormState.ToCls();
         }
 
         public void Min()
         {
-            FormState = $"{Prefix}-min";
-
+            FormState = FormState.Min;
             BcdFormContainer.MinFormCount += 1;
         }
         
         public void Max()
         {
-            if (IsMin)
+            if (IsMin())
             {
                 BcdFormContainer.MinFormCount -= 1;
             }
-            FormState = $"{Prefix}-max";
+
+            FormState = FormState.Max;
         }
 
         public void Normal()
         {
-            if (IsMin)
+            if (IsMin())
             {
                 BcdFormContainer.MinFormCount -= 1;
             }
 
-            FormState = "";
+            FormState = FormState.Normal;
         }
 
         internal void TriggerMaxNormal()
         {
-            if (IsMax)
+            if (IsMax())
             {
                 Normal();
             }
-            else 
+            else if(IsMin())
+            {
+                if (IsNormal(LastState))
+                {
+                    Normal();
+                }
+                else
+                {
+                    Max();
+                }
+            }
+            else
             {
                 Max();
             }
         }
 
-        public bool IsMin => FormState == $"{Prefix}-min";
-        public bool IsMax => FormState == $"{Prefix}-max";
-        public bool IsNormal => string.IsNullOrWhiteSpace(FormState);
+        public bool IsMin(FormState? state = null)
+        {
+            state ??= FormState;
+            return state.Value.IsMin();
+        }
+
+        public bool IsMax(FormState? state = null)
+        {
+            state ??= FormState;
+            return state.Value.IsMax();
+        }
+
+        public bool IsNormal(FormState? state = null)
+        {
+            state ??= FormState;
+            return state.Value.IsNormal();
+        }
 
         #endregion
 
@@ -377,18 +465,18 @@ namespace BcdLib
                     $"#{Name} .bcd-form-header .bcd-form-title", $"#{Name} .bcd-form", DragInViewport);
             }
 
-            if (IsMin)
+            if (IsMin())
             {
                 await JsInvokeVoidAsync(JsInteropConstants.MinResetStyle,$"#{Name}");
             }
-            else if (IsMax)
+            else if (IsMax())
             {
                 await JsInvokeVoidAsync(JsInteropConstants.MaxResetStyle, $"#{Name}");
             }
 
             if (!firstRender)
             {
-                if (IsNormal)
+                if (IsNormal())
                 {
                     await JsInvokeVoidAsync(JsInteropConstants.NormalResetStyle, $"#{Name}");
                 }
