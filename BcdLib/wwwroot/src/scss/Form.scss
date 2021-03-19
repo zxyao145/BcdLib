@@ -1,8 +1,13 @@
 ﻿
 $prefix-cls: 'bcd-form';
 $form-header-height: '48px';
+$header-border-bottom-color:#f0f0f0;
+$header-background-color: #fff;
+$content-background-color:#fff;
 
-
+$title-color: rgba(0, 0, 0, .85);
+$tool-color: rgba(0, 0, 0, 0.45);
+$tool-hover-color: rgba(0, 0, 0, .75) ;
 
 
 .draggable {
@@ -25,10 +30,25 @@ $form-header-height: '48px';
         .#{$prefix-cls}-root {
             position: absolute;
             width: 100%;
+
+
+            .#{$prefix-cls}-mask {
+                position: fixed;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                left: 0;
+                z-index: 1000;
+                height: 100%;
+                background-color: rgba(0,0,0,.45);
+
+                &.#{$prefix-cls}-mask-hidden {
+                    display: none;
+                }
+            }
         }
     }
 }
-
 
 .#{$prefix-cls} {
     box-sizing: border-box;
@@ -46,133 +66,94 @@ $form-header-height: '48px';
     width: auto;
     max-width: calc(100vw - 32px);
     margin: 0 auto;
-    /* padding-bottom: 24px;*/
     z-index: 20210307;
-
-    &.zoom-appear,
-    &.zoom-enter {
-        transform: none;
-        opacity: 0;
-        animation-duration: .3s;
-        user-select: none;
-    }
-
-    .#{$prefix-cls}-mask {
-        position: fixed;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
-        z-index: 1000;
-        height: 100%;
-        background-color: rgba(0,0,0,.45);
-
-        &.#{$prefix-cls}-mask-hidden {
-            display: none;
-        }
-    }
-
-
-
-    .#{$prefix-cls}-wrap {
-        position: fixed;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
-        overflow: auto;
-        outline: 0;
-        -webkit-overflow-scrolling: touch;
-        z-index: 1000;
-    }
-
-
-    .#{$prefix-cls}-header {
-        color: rgba(0, 0, 0, .85);
-        background: #fff;
-        border-bottom: 1px solid #f0f0f0;
-        border-radius: 2px 2px 0 0;
-        display: flex;
-
-
-        .#{$prefix-cls}-title {
-            padding: 12px 12px;
-            flex-grow: 1;
-            margin: 0;
-            color: rgba(0, 0, 0, .85);
-            font-weight: 500;
-            font-size: 16px;
-            line-height: 22px;
-            word-wrap: break-word;
-            display: flex;
-            align-items: center;
-            text-overflow: ellipsis;
-            overflow: hidden;
-            white-space: nowrap;
-            font-family: 'Microsoft YaHei', Helvetica, SimHei,sans-serif;
-        }
-
-        & .#{$prefix-cls}-header-tools {
-            padding: 12px 12px;
-            padding-left: 4px;
-            display: flex;
-            flex-grow: 0;
-
-            > button {
-                display: flex;
-                justify-items: center;
-                align-items: center;
-                width: 36px;
-                /*height: 36px;*/
-                margin-top: -12px;
-                margin-bottom: -12px;
-                padding: 0;
-                z-index: 10;
-                color: rgba(0, 0, 0, .45);
-                font-weight: 700;
-                line-height: 1;
-                text-decoration: none;
-                background: 0 0;
-                border: 0;
-                outline: 0;
-                cursor: pointer;
-                transition: color .3s;
-
-                &:disabled {
-                    cursor: default;
-                    color: #ccc;
-                }
-
-                &:enabled {
-                    &:focus, &:hover {
-                        color: rgba(0, 0, 0, .75);
-                        text-decoration: none;
-                    }
-                }
-
-                > span {
-                    width: 100%;
-                }
-            }
-        }
-    }
 
     .#{$prefix-cls}-content {
         position: relative;
-        background-color: #fff;
+        background-color: $content-background-color;
         background-clip: padding-box;
         border: 0;
         border-radius: 2px;
         box-shadow: 0 3px 6px -4px rgba(0, 0, 0, .12), 0 6px 16px 0 rgba(0, 0, 0, .08), 0 9px 28px 8px rgba(0, 0, 0, .05);
         pointer-events: auto;
-    }
 
-    .#{$prefix-cls}-body {
-        padding: 24px;
-        font-size: 14px;
-        line-height: 1.5715;
-        word-wrap: break-word;
-        overflow: auto;
+        .#{$prefix-cls}-header {
+            color: rgba(0, 0, 0, .85);
+            background: #{$header-background-color};
+            border-bottom: 1px solid #{$header-border-bottom-color};
+            border-radius: 2px 2px 0 0;
+            display: flex;
+
+
+            .#{$prefix-cls}-title {
+                padding: 12px 12px;
+                flex-grow: 1;
+                margin: 0;
+                color: $title-color;
+                font-weight: 500;
+                font-size: 16px;
+                line-height: 22px;
+                word-wrap: break-word;
+                display: flex;
+                align-items: center;
+                text-overflow: ellipsis;
+                overflow: hidden;
+                white-space: nowrap;
+                font-family: 'Microsoft YaHei', Helvetica, SimHei,sans-serif;
+            }
+
+            & .#{$prefix-cls}-header-tools {
+                padding: 12px 12px;
+                padding-left: 4px;
+                display: flex;
+                flex-grow: 0;
+
+                > button {
+                    display: flex;
+                    justify-items: center;
+                    align-items: center;
+                    width: 36px;
+                    /*height: 36px;*/
+                    margin-top: -12px;
+                    margin-bottom: -12px;
+                    padding: 0;
+                    z-index: 10;
+                    color: $tool-color;
+                    font-weight: 700;
+                    line-height: 1;
+                    text-decoration: none;
+                    background: 0 0;
+                    border: 0;
+                    outline: 0;
+                    cursor: pointer;
+                    transition: color .3s;
+
+                    &:disabled {
+                        cursor: default;
+                        color: #ccc;
+                    }
+
+                    &:enabled {
+                        &:focus, &:hover {
+                            color: $tool-hover-color;
+                            text-decoration: none;
+                        }
+                    }
+
+                    > span {
+                        width: 100%;
+                    }
+                }
+            }
+        }
+
+        .#{$prefix-cls}-body {
+            padding: 24px;
+            font-size: 14px;
+            line-height: 1.5715;
+            word-wrap: break-word;
+            overflow: auto;
+        }
     }
 
     .#{$prefix-cls}-open {

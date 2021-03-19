@@ -115,6 +115,16 @@ namespace BcdLib
         public bool EnableHeader { get; set; } = true;
 
         /// <summary>
+        /// 允许显示Mask
+        /// </summary>
+        public bool ShowMask { get; set; }
+
+        /// <summary>
+        /// Mask的样式，如果显示Mask
+        /// </summary>
+        public string MaskStyle { get; set; }
+
+        /// <summary>
         /// 标题
         /// </summary>
         public string Title { get; set; }
@@ -142,7 +152,7 @@ namespace BcdLib
         /// <summary>
         /// 仅允许在视窗内拖动
         /// </summary>
-        public bool DragInViewport { get; set; }
+        public bool DragInViewport { get; set; } = true;
 
         #endregion
 

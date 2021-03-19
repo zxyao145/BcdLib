@@ -13,7 +13,10 @@
                 }
 
                 <div id="@form.Name" @key="form" class="bcd-form-root @form.GetFormState()" style="@form.GetStyle()">
-                    <div class="bcd-form-mask"></div>
+                    @if (form.ShowMask)
+                    {
+                        <div class="bcd-form-mask @form.MaskStyle"></div>
+                    }
 
                     <div class="bcd-form @minCls" style="width: 520px;">
                         <div class="bcd-form-content">

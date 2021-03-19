@@ -57,12 +57,12 @@ class Dragger {
             console.log("this._isFirst", this._isFirst, left, top);
         });
 
-        if (this._isFirst) {
+        state.domMaxY = document.documentElement.clientHeight
+            - this._container.offsetHeight - 1;
+        state.domMaxX = document.documentElement.clientWidth
+            - this._container.offsetWidth - 1;
 
-            state.domMaxY = document.documentElement.clientHeight
-                - this._container.offsetHeight - 1;
-            state.domMaxX = document.documentElement.clientWidth
-                - this._container.offsetWidth - 1;
+        if (this._isFirst) {
             this._container.style.left = left + 'px';
             this._container.style.top = top + 'px';
 
