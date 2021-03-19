@@ -2,6 +2,9 @@
 $prefix-cls: 'bcd-form';
 $form-header-height: '48px';
 
+
+
+
 .draggable {
     cursor: move;
 }
@@ -18,6 +21,11 @@ $form-header-height: '48px';
         pointer-events: none;
         width: 100%;
         height: 100%;
+
+        .#{$prefix-cls}-root {
+            position: absolute;
+            width: 100%;
+        }
     }
 }
 
@@ -149,9 +157,6 @@ $form-header-height: '48px';
         }
     }
 
-
-
-
     .#{$prefix-cls}-content {
         position: relative;
         background-color: #fff;
@@ -219,6 +224,7 @@ $form-header-height: '48px';
     .bcd-form {
         width: 200px !important;
         top: calc(100vh - #{$form-header-height});
+        display: inline-block;
 
         &.min-lb {
             left: 0;
@@ -228,8 +234,20 @@ $form-header-height: '48px';
             right: 0;
         }
 
-        .bcd-form-body {
-            display: none;
+        .bcd-form-content {
+            box-shadow: none;
+            border: 1px solid #efefef;
+            border-radius: 2px 2px;
+
+            .bcd-form-body {
+                display: none;
+            }
+        }
+    }
+
+    @for $i from 0 to 20 {
+        .min-l-#{$i} {
+            left: 200px * $i;
         }
     }
 }

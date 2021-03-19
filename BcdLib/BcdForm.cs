@@ -230,15 +230,26 @@ namespace BcdLib
         public void Min()
         {
             FormState = $"{Prefix}-min";
+
+            BcdFormContainer.MinFormCount += 1;
         }
         
         public void Max()
         {
+            if (IsMin)
+            {
+                BcdFormContainer.MinFormCount -= 1;
+            }
             FormState = $"{Prefix}-max";
         }
 
         public void Normal()
         {
+            if (IsMin)
+            {
+                BcdFormContainer.MinFormCount -= 1;
+            }
+
             FormState = "";
         }
 

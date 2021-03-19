@@ -10,6 +10,8 @@ namespace BcdLib
 {
     public partial class BcdFormContainer
     {
+        internal static int MinFormCount = 0;
+
         internal static BcdFormContainer BcdFormContainerInstance { get; private set; }
 
         private readonly HashSet<BcdForm> _forms;

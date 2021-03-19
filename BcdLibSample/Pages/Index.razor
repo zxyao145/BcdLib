@@ -6,7 +6,7 @@ Welcome to your new app.
 
 <button @onclick="OpenABcdForm">OpenABcdForm</button>
 
-
+<button @onclick="OpenABcdForm2">OpenABcdForm2</button>
 @code
 {
     BcdForm bcdFormTest = null;
@@ -42,5 +42,27 @@ Welcome to your new app.
         }
 
         index++;
+    }
+
+    BcdForm bcdFormTest2 = null;
+
+    async void OpenABcdForm2()
+    {
+        if (bcdFormTest2 == null)
+        {
+            bcdFormTest2 = new BcdForm1();
+            await bcdFormTest2.ShowAsync();
+        }
+        else
+        {
+            if (bcdFormTest2.Visible)
+            {
+                await bcdFormTest2.CloseAsync();
+            }
+            else
+            {
+                await bcdFormTest2.ShowAsync();
+            }
+        }
     }
 }
