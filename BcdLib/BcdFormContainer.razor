@@ -1,15 +1,22 @@
-﻿<div class="bcd-form-container">
+﻿@using BcdLib.Extensions
+<div class="bcd-form-container">
     <div>
         @if (_forms != null)
         {
-            var minIndex = 0;
+            var dict = new Dictionary<MinPosition, int>()
+            {
+                {MinPosition.LeftBottom, 0},
+                {MinPosition.RightBottom, 0},
+            };
+
+
             @foreach (var form in _forms)
             {
                 string minCls = "";
                 if (form.IsMin())
                 {
-                    minCls = $"min-l-{minIndex}";
-                    minIndex++;
+                    minCls = $"{form.MinPosition.ToCls()}-{dict[form.MinPosition]}";
+                    dict[form.MinPosition] += 1;
                 }
 
                 <div id="@form.Name" @key="form" class="bcd-form-root @form.GetFormState()" style="@form.GetStyle()">

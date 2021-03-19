@@ -221,7 +221,7 @@ $tool-hover-color: rgba(0, 0, 0, .75) ;
     &.min-lb {
 
         @for $i from 0 to 20 {
-            .min-l-#{$i} {
+            .min-lb-#{$i} {
                 left: 200px * $i;
             }
         }
@@ -230,7 +230,7 @@ $tool-hover-color: rgba(0, 0, 0, .75) ;
     &.min-rb {
 
         @for $i from 0 to 20 {
-            .min-l-#{$i} {
+            .min-rb-#{$i} {
                 position: absolute;
                 right: 200px * $i;
             }
