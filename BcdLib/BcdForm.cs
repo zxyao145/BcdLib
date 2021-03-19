@@ -473,13 +473,6 @@ namespace BcdLib
                 }
             }
 
-            if (!_firstRender)
-            {
-                //if (IsNormal())
-                //{
-                //    await JsInvokeVoidAsync(JsInteropConstants.NormalResetStyle, $"#{Name}");
-                //}
-            }
 
             // ReSharper disable once MethodHasAsyncOverload
             AfterBcdRender(_firstRender);
