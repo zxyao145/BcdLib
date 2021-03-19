@@ -43,6 +43,9 @@ namespace BcdLib
 
         #region form properties
 
+        public MinPosition MinPosition { get; set; } = MinPosition.RightBottom;
+
+
         public string BodyStyle { get; set; }
 
         /// <summary>
@@ -95,11 +98,6 @@ namespace BcdLib
         protected abstract void InitComponent();
 
         public bool HasDestroyed { get; set; } = true;
-
-        public MinPosition MinPosition { get; set; } = MinPosition.RightBottom;
-
-
-       
 
         internal string GetHeaderCls()
         {
@@ -339,6 +337,8 @@ namespace BcdLib
                 if (disposing)
                 {
                     ServiceScope?.Dispose();
+                    // destroy DOM from the Document
+                    _ = BcdFormContainer.BcdFormContainerInstance.RemoveFormAsync(this);
                 }
             }
             IsDisposed = true;
