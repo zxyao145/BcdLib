@@ -1,6 +1,6 @@
 ﻿
 $prefix-cls: 'bcd-form';
-$form-header-height: '48px';
+$form-header-height: '50px';
 $header-border-bottom-color:#f0f0f0;
 $header-background-color: #fff;
 $content-background-color:#fff;
@@ -207,14 +207,6 @@ $tool-hover-color: rgba(0, 0, 0, .75) ;
         top: calc(100vh - #{$form-header-height});
         display: inline-block;
 
-        &.min-lb {
-            left: 0;
-        }
-
-        &.min-rb {
-            right: 0;
-        }
-
         .bcd-form-content {
             box-shadow: none;
             border: 1px solid #efefef;
@@ -226,9 +218,22 @@ $tool-hover-color: rgba(0, 0, 0, .75) ;
         }
     }
 
-    @for $i from 0 to 20 {
-        .min-l-#{$i} {
-            left: 200px * $i;
+    &.min-lb {
+
+        @for $i from 0 to 20 {
+            .min-l-#{$i} {
+                left: 200px * $i;
+            }
+        }
+    }
+
+    &.min-rb {
+
+        @for $i from 0 to 20 {
+            .min-l-#{$i} {
+                position: absolute;
+                right: 200px * $i;
+            }
         }
     }
 }

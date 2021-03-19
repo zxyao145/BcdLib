@@ -37,11 +37,6 @@ namespace BcdLib
 
         public BcdFormContainer()
         {
-            if (BcdFormContainerInstance == null)
-            {
-                throw new Exception("BcdFormContainer initialization failed!");
-            }
-
             var type = typeof(ComponentBase);
             _innerRenderFragmentFieldInfo = type.GetField("_renderFragment", BindingFlags.NonPublic | BindingFlags.Instance);
             BcdFormContainerInstance = this;

@@ -117,7 +117,7 @@ namespace BcdLib
 
         internal string GetFormStyle()
         {
-            if (!_firstRender)
+            if (_firstRender)
             {
                 var sty = $"width: {Width}px;";
                 _lastNormal = sty;
