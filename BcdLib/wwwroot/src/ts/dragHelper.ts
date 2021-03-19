@@ -41,6 +41,8 @@ class Dragger {
     }
 
     onMousedown = (e) => {
+        e.stopPropagation = true;
+
         autoDebug(() => {
             console.log("onMousedown");
         });
@@ -76,6 +78,8 @@ class Dragger {
     }
 
     onMouseup = (e) => {
+        e.stopPropagation = true;
+
         const state = this._state;
 
         state.isInDrag = false;
@@ -86,6 +90,7 @@ class Dragger {
     }
 
     onMousemove = throttle((e) => {
+
         const state = this._state;
         if (state.isInDrag) {
             var nowX = e.clientX,
@@ -109,7 +114,8 @@ class Dragger {
                     newDomY = state.domMaxY;
                 }
             }
-            this._container.style.position = "absolute";
+            //this._container.style.position = "absolute";
+            //console.log("absolute");
             this._container.style.margin = "0";
             this._container.style.paddingBottom = "0";
             this._container.style.left = newDomX + "px";

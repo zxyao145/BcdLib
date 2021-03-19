@@ -12,9 +12,9 @@ namespace BcdLibSample.BcdForms
 
         protected override void InitComponent()
         {
-            MaximizeBox = false;
             Draggable = true;
             Title = "BcdForm1";
+            BodyStyle = "max-height:400px;";
         }
     }
 }

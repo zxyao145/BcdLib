@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
@@ -8,10 +9,17 @@ using BcdLib.Core;
 
 namespace BcdLib
 {
+    public enum MinPosition
+    {
+        LeftBottom = 0,
+        RightBottom = 1
+    }
     public abstract class BcdForm: ComponentBase,IDisposable
     {
         //private static readonly FieldInfo _innerRenderHandleFieldInfo;
         //private RenderHandle _renderHandle;
+
+        public const string Prefix = "bcd-form";
 
         static BcdForm()
         {
@@ -34,6 +42,8 @@ namespace BcdLib
         }
 
         #region form properties
+
+        public string BodyStyle { get; set; }
 
         /// <summary>
         /// 是否关闭时从DOM中移除
@@ -86,6 +96,11 @@ namespace BcdLib
 
         public bool HasDestroyed { get; set; } = true;
 
+        public MinPosition MinPosition { get; set; } = MinPosition.RightBottom;
+
+
+       
+
         internal string GetHeaderCls()
         {
             return Draggable ? "draggable" : "";
@@ -95,6 +110,7 @@ namespace BcdLib
         {
             return Visible ? "" : "display:none;";
         }
+
 
         #region Show
 
@@ -195,7 +211,58 @@ namespace BcdLib
         }
 
         #endregion
+
+        #region min max
+
+        /// <summary>
+        /// form max min or normal
+        /// </summary>
+        private string FormState { get; set; }
+
+        internal string GetFormState()
+        {
+            if (IsMin)
+            {
+                return $"{FormState} min-" + (MinPosition == MinPosition.LeftBottom ? "lb" : "rb");
+            }
+
+            return FormState;
+        }
+
+        public void Min()
+        {
+            FormState = $"{Prefix}-min";
+        }
         
+        public void Max()
+        {
+            FormState = $"{Prefix}-max";
+        }
+
+        public void Normal()
+        {
+            FormState = "";
+        }
+
+        internal void TriggerMaxNormal()
+        {
+            if (IsMax)
+            {
+                Normal();
+            }
+            else 
+            {
+                Max();
+            }
+        }
+
+        public bool IsMin => FormState == $"{Prefix}-min";
+        public bool IsMax => FormState == $"{Prefix}-max";
+        public bool IsNormal => string.IsNullOrWhiteSpace(FormState);
+
+        #endregion
+
+
         #region 代理
 
         /// <summary>
@@ -296,7 +363,26 @@ namespace BcdLib
             if (Draggable)
             {
                 await JsInvokeVoidAsync(JsInteropConstants.EnableDraggable,
-                    $"#{Name} .bcd-form-header", $"#{Name} .bcd-form", DragInViewport);
+                    $"#{Name} .bcd-form-header .bcd-form-title", $"#{Name} .bcd-form", DragInViewport);
+            }
+
+            if (IsMin)
+            {
+                await JsInvokeVoidAsync(JsInteropConstants.MinResetStyle,$"#{Name}");
+            }
+            else if (IsMax)
+            {
+                await JsInvokeVoidAsync(JsInteropConstants.MaxResetStyle, $"#{Name}");
+            }
+
+            if (!firstRender)
+            {
+                if (IsNormal)
+                {
+                    await JsInvokeVoidAsync(JsInteropConstants.NormalResetStyle, $"#{Name}");
+                }
+
+                
             }
 
             // ReSharper disable once MethodHasAsyncOverload

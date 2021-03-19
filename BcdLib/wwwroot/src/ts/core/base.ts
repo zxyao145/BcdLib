@@ -33,9 +33,23 @@ const getDom = (selector: string | Element): null | HTMLElement => {
     return document.querySelector(selector) as HTMLElement;
 }
 
+const attr = (selector: string | Element, key: string, value: string | null = null) => {
+    let dom = getDom(selector);
+    if (dom) {
+        if (value) {
+            dom.setAttribute(key, value);
+            return value;
+        } else {
+            return dom.getAttribute(key);
+        }
+    }
+    return null;
+}
+
+
 const $ = getDom;
 
 export default $;
 export {
-    throttle, getDom, $
+    throttle, getDom, $, attr
 };
