@@ -2,17 +2,26 @@
     enableDraggable, disableDraggable, resetDraggableElePosition
 } from "./dragHelper";
 
+import { autoDebug } from "./global";
+import { getDom, attr } from "./core/base";
 
-import { getDom } from "./core/base";
+let lastNormalStyle: string | null = null;
 
 /**
  * for min to reset drag left and top info
  * @param formRoot
  */
-export function minResetStyle(formRoot: string|HTMLElement) {
+export function minResetStyle(formRoot: string | HTMLElement, lastIsNormal:boolean) {
     let rootEle = getDom(formRoot);
     if (rootEle) {
         let form = rootEle.querySelector('.bcd-form') as HTMLElement;
+        if (lastIsNormal) {
+            lastNormalStyle = attr(form, "style");
+            autoDebug(() => {
+                console.log("get lastNormalStyle", lastNormalStyle);
+            });
+        }
+
         form!.style.left = "";
         form!.style.top = "";
         form!.style.right = "";
@@ -24,10 +33,17 @@ export function minResetStyle(formRoot: string|HTMLElement) {
  * for min to reset drag left and top info
  * @param formRoot
  */
-export function maxResetStyle(formRoot: string | HTMLElement) {
+export function maxResetStyle(formRoot: string | HTMLElement, lastIsNormal: boolean) {
     let rootEle = getDom(formRoot);
     if (rootEle) {
         let form = rootEle.querySelector('.bcd-form') as HTMLElement;
+        if (lastIsNormal) {
+            lastNormalStyle = attr(form, "style");
+            autoDebug(() => {
+                console.log("get lastNormalStyle", lastNormalStyle);
+            });
+        }
+
         form!.style.left = "";
         form!.style.top = "";
     }
@@ -42,8 +58,11 @@ export function normalResetStyle(formRoot: string | HTMLElement) {
     let rootEle = getDom(formRoot);
     if (rootEle) {
         let form = rootEle.querySelector('.bcd-form') as HTMLElement;
-        form!.style.position = "";
-        form!.style.left = "";
-        form!.style.top = "";
+        autoDebug(() => {
+            console.log("set lastNormalStyle", lastNormalStyle);
+        });
+        if (lastNormalStyle !== null) {
+            attr(form, "style", lastNormalStyle);
+        }
     }
 }

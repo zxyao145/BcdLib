@@ -324,7 +324,7 @@ namespace BcdLib
             }
             else if(IsMin())
             {
-                if (IsNormal(LastState))
+                if (LastState.IsNormal())
                 {
                     Normal();
                 }
@@ -339,22 +339,19 @@ namespace BcdLib
             }
         }
 
-        public bool IsMin(FormState? state = null)
+        public bool IsMin()
         {
-            state ??= FormState;
-            return state.Value.IsMin();
+            return FormState.IsMin();
         }
 
-        public bool IsMax(FormState? state = null)
+        public bool IsMax()
         {
-            state ??= FormState;
-            return state.Value.IsMax();
+            return FormState.IsMax();
         }
 
-        public bool IsNormal(FormState? state = null)
+        public bool IsNormal()
         {
-            state ??= FormState;
-            return state.Value.IsNormal();
+            return FormState.IsNormal();
         }
 
         #endregion
@@ -467,11 +464,11 @@ namespace BcdLib
 
             if (IsMin())
             {
-                await JsInvokeVoidAsync(JsInteropConstants.MinResetStyle,$"#{Name}");
+                await JsInvokeVoidAsync(JsInteropConstants.MinResetStyle,$"#{Name}", LastState.IsNormal());
             }
             else if (IsMax())
             {
-                await JsInvokeVoidAsync(JsInteropConstants.MaxResetStyle, $"#{Name}");
+                await JsInvokeVoidAsync(JsInteropConstants.MaxResetStyle, $"#{Name}", LastState.IsNormal());
             }
 
             if (!firstRender)
