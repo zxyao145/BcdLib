@@ -94,8 +94,12 @@ namespace BcdLib
 
         #region form properties
 
-        public MinPosition MinPosition { get; set; } = MinPosition.RightBottom;
+        /// <summary>
+        /// width of form, unit is px
+        /// </summary>
+        public int Width { get; set; } = 520;
 
+        public MinPosition MinPosition { get; set; } = MinPosition.RightBottom;
 
         public string BodyStyle { get; set; }
 
@@ -170,6 +174,21 @@ namespace BcdLib
             return Visible ? "" : "display:none;";
         }
 
+        internal string GetFormStyle()
+        {
+            if (!_hasShowed)
+            {
+                var sty = $"width: {Width}px;";
+                _hasShowed = true;
+                _lastNormal = sty;
+            }
+
+            return _lastNormal;
+        }
+
+        private bool _hasShowed = false;
+        private string _lastNormal;
+        private bool firstRender = true;
 
         #region Show
 
@@ -464,9 +483,9 @@ namespace BcdLib
 
         #endregion
 
-        internal async Task AfterRenderAsync(bool firstRender)
+        internal async Task AfterRenderAsync()
         {
-            if (Draggable)
+            if (firstRender && Draggable)
             {
                 await JsInvokeVoidAsync(JsInteropConstants.EnableDraggable,
                     $"#{Name} .bcd-form-header .bcd-form-title", $"#{Name} .bcd-form", DragInViewport);
@@ -474,34 +493,43 @@ namespace BcdLib
 
             if (IsMin())
             {
-                await JsInvokeVoidAsync(JsInteropConstants.MinResetStyle,$"#{Name}", LastState.IsNormal());
+                var lastNormal = await JsInvokeAsync<string>(JsInteropConstants.MinResetStyle,$"#{Name}", LastState.IsNormal());
+                if (LastState.IsNormal())
+                {
+                    _lastNormal = lastNormal;
+                }
             }
             else if (IsMax())
             {
-                await JsInvokeVoidAsync(JsInteropConstants.MaxResetStyle, $"#{Name}", LastState.IsNormal());
+                var lastNormal = await JsInvokeAsync<string>(JsInteropConstants.MaxResetStyle, $"#{Name}", LastState.IsNormal());
+                if (LastState.IsNormal())
+                {
+                    _lastNormal = lastNormal;
+                }
             }
 
             if (!firstRender)
             {
-                if (IsNormal())
-                {
-                    await JsInvokeVoidAsync(JsInteropConstants.NormalResetStyle, $"#{Name}");
-                }
-
-                
+                //if (IsNormal())
+                //{
+                //    await JsInvokeVoidAsync(JsInteropConstants.NormalResetStyle, $"#{Name}");
+                //}
             }
 
             // ReSharper disable once MethodHasAsyncOverload
-            AfterRender();
-
-            await AfterRenderAsync();
+             AfterBcdRender(firstRender);
+            await AfterBcdRenderAsync(firstRender);
+            if (firstRender)
+            {
+                firstRender = false;
+            }
         }
 
         /// <summary>
         /// it will trigger in OnAfterRenderAsync
         /// </summary>
         /// <returns></returns>
-        protected virtual void AfterRender()
+        protected virtual void AfterBcdRender(bool firstRender)
         {
         }
         
@@ -509,7 +537,7 @@ namespace BcdLib
         /// it will trigger in OnAfterRenderAsync
         /// </summary>
         /// <returns></returns>
-        protected virtual Task AfterRenderAsync()
+        protected virtual Task AfterBcdRenderAsync(bool firstRender)
         {
             return Task.CompletedTask;
         }

@@ -18,7 +18,7 @@
                         <div class="bcd-form-mask @form.MaskStyle"></div>
                     }
 
-                    <div class="bcd-form @minCls" style="width: 520px;">
+                    <div class="bcd-form @minCls" style=" @form.GetFormStyle() ">
                         <div class="bcd-form-content">
                             @if (form.EnableHeader)
                             {
@@ -67,7 +67,7 @@
                                         }
 
                                         <button class="bcd-form-close-btn"
-                                                @onclick="@(async () => { await CloseFormAsync(form); })"
+                                                @onclick="@(EventUtil.AsNonRenderingEventHandler(async () => { await CloseFormAsync(form); }) )"
                                                 @onclick:stopPropagation="true">
                                             <span class="bcd-form-header-tool bcd-form-icon-close">
                                                 <svg t="1610695030046"

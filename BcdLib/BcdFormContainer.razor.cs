@@ -91,7 +91,7 @@ namespace BcdLib
 
             foreach (var form in _forms)
             {
-                await form.AfterRenderAsync(firstRender);
+                await form.AfterRenderAsync();
             }
             await base.OnAfterRenderAsync(firstRender);
         }

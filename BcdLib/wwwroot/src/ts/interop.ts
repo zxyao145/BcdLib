@@ -6,29 +6,33 @@ import { autoDebug } from "./global";
 import { getDom, attr } from "./core/base";
 
 
-const lastNormalStyleMap = new WeakMap();
-
 /**
  * for min to reset drag left and top info
  * @param formRoot
  */
 export function minResetStyle(formRoot: string | HTMLElement, lastIsNormal:boolean) {
     let rootEle = getDom(formRoot);
+    let lastNormalStyle: string | null = "";
     if (rootEle) {
         let form = rootEle.querySelector('.bcd-form') as HTMLElement;
+        
         if (lastIsNormal) {
-            let lastNormalStyle = attr(form, "style");
-            lastNormalStyleMap.set(form, lastNormalStyle);
+            lastNormalStyle = attr(form, "style");
 
             autoDebug(() => {
                 console.log("get lastNormalStyle", lastNormalStyle);
             });
         }
 
+        autoDebug(() => {
+            console.log("minResetStyle");
+        });
+
         form!.style.left = "";
         form!.style.top = "";
         form!.style.right = "";
     }
+    return lastNormalStyle;
 }
 
 
@@ -38,39 +42,23 @@ export function minResetStyle(formRoot: string | HTMLElement, lastIsNormal:boole
  */
 export function maxResetStyle(formRoot: string | HTMLElement, lastIsNormal: boolean) {
     let rootEle = getDom(formRoot);
+    let lastNormalStyle: string | null = "";
     if (rootEle) {
         let form = rootEle.querySelector('.bcd-form') as HTMLElement;
         if (lastIsNormal) {
-            let lastNormalStyle = attr(form, "style");
-            lastNormalStyleMap.set(form, lastNormalStyle);
+            lastNormalStyle = attr(form, "style");
 
             autoDebug(() => {
                 console.log("get lastNormalStyle", lastNormalStyle);
             });
         }
 
+        autoDebug(() => {
+            console.log("maxResetStyle");
+        });
+
         form!.style.left = "";
         form!.style.top = "";
     }
-}
-
-
-/**
- * for normal state form to reset style
- * @param formRoot
- */
-export function normalResetStyle(formRoot: string | HTMLElement) {
-    let rootEle = getDom(formRoot);
-    if (rootEle) {
-        let form = rootEle.querySelector('.bcd-form') as HTMLElement;
-        if (lastNormalStyleMap.has(form)) {
-            let lastNormalStyle = lastNormalStyleMap.get(form);
-            autoDebug(() => {
-                console.log("set lastNormalStyle", lastNormalStyle);
-            });
-            if (lastNormalStyle !== null) {
-                attr(form, "style", lastNormalStyle);
-            }
-        }
-    }
+    return lastNormalStyle;
 }
