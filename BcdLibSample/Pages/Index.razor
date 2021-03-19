@@ -4,17 +4,28 @@
 
 Welcome to your new app.
 
-<button @onclick="OpenABcdForm">OpenABForm</button>
+<button @onclick="OpenABcdForm">OpenABcdForm</button>
 
 
 @code
 {
     BcdForm bcdFormTest = null;
 
+    int index = 0;
+
     async void OpenABcdForm()
     {
-        if (bcdFormTest == null)
+        if (index % 3  == 0)
         {
+
+            if (index > 0)
+            {
+                // to test dispose method:
+                // Can DOM be removed from document correctly
+                bcdFormTest?.Dispose();
+                await Task.Delay(2000);
+            }
+
             bcdFormTest = new BcdForm1();
             await bcdFormTest.ShowAsync();
         }
@@ -29,5 +40,7 @@ Welcome to your new app.
                 await bcdFormTest.ShowAsync();
             }
         }
+
+        index++;
     }
 }
