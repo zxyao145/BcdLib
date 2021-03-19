@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using Microsoft.JSInterop;
 
-namespace BcdLib
+namespace BcdLib.Core
 {
     internal class BcdServices
     {
@@ -15,20 +17,6 @@ namespace BcdLib
         {
             jsRuntime = JsRuntime;
             return jsRuntime != null;
-        }
-    }
-
-    public static class BcdServicesExtensions
-    {
-        /// <summary>
-        /// add BcdServices
-        /// </summary>
-        /// <param name="services"></param>
-        /// <returns></returns>
-        public static IServiceProvider AddBcdServices(this IServiceProvider services)
-        {
-            BcdServices.ServiceProvider = services;
-            return services;
         }
     }
 }

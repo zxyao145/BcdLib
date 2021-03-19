@@ -10,9 +10,20 @@ namespace BcdLib
 {
     public partial class BcdFormContainer
     {
-        internal static int MinFormCount = 0;
+        internal static int MinFormCount { get; set; }= 0;
 
         internal static BcdFormContainer BcdFormContainerInstance { get; private set; }
+
+        /// <summary>
+        /// close the form
+        /// </summary>
+        /// <param name="form"></param>
+        /// <returns></returns>
+        internal static async Task CloseFormAsync(BcdForm form)
+        {
+            await form.CloseAsync();
+        }
+
 
         private readonly HashSet<BcdForm> _forms;
         private readonly Dictionary<BcdForm, RenderFragment> _form2Compontents;
@@ -28,7 +39,7 @@ namespace BcdLib
         {
             if (BcdFormContainerInstance == null)
             {
-                // TODO
+                throw new Exception("BcdFormContainer initialization failed!");
             }
 
             var type = typeof(ComponentBase);
@@ -39,56 +50,39 @@ namespace BcdLib
         }
 
         /// <summary>
-        /// 从 DOM 中删除 Form
+        /// remove form from DOM
         /// </summary>
-        /// <param name="bForm"></param>
+        /// <param name="bcdForm"></param>
         /// <returns></returns>
-        internal async Task RemoveFormAsync(BcdForm bForm)
+        internal async Task RemoveFormAsync(BcdForm bcdForm)
         {
-            if (_forms.Contains(bForm))
+            if (_forms.Contains(bcdForm))
             {
-                _forms.Remove(bForm);
-                _form2Compontents.Remove(bForm);
+                _forms.Remove(bcdForm);
+                _form2Compontents.Remove(bcdForm);
                 await InvokeAsync(StateHasChanged);
             }
         }
 
         /// <summary>
-        /// 向DOM中添加 BForm
+        /// remove form to DOM
         /// </summary>
-        /// <param name="form"></param>
-        /// <param name="callback"></param>
+        /// <param name="bcdForm"></param>
         /// <returns></returns>
-        internal async Task AppendFormAsync(BcdForm form, Func<Task> callback = null)
+        internal async Task AppendFormAsync(BcdForm bcdForm)
         {
-            if (!_forms.Contains(form))
+            if (!_forms.Contains(bcdForm))
             {
-                _forms.Add(form);
-                RenderFragment value = _innerRenderFragmentFieldInfo.GetValue(form) as RenderFragment;
-                _form2Compontents.Add(form, value);
+                _forms.Add(bcdForm);
+                RenderFragment value = _innerRenderFragmentFieldInfo.GetValue(bcdForm) as RenderFragment;
+                _form2Compontents.Add(bcdForm, value);
                 await InvokeAsync(StateHasChanged);
-                if (callback != null)
-                {
-                    _onAfterRender = callback;
-                }
             }
         }
 
-        internal static async Task CloseFormAsync(BcdForm form)
-        {
-            await form.CloseAsync();
-        }
-
-        private Func<Task> _onAfterRender;
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
-            if (_onAfterRender != null)
-            {
-                await _onAfterRender.Invoke();
-                _onAfterRender = null;
-            }
-
             foreach (var form in _forms)
             {
                 await form.AfterRenderAsync();
@@ -105,19 +99,5 @@ namespace BcdLib
         {
             return InvokeAsync(StateHasChanged);
         }
-
-        internal void InvokeStateHasChanged(Func<Task> onAfterRender)
-        {
-            _onAfterRender = onAfterRender;
-            InvokeStateHasChanged();
-        }
-
-        internal Task InvokeStateHasChangedAsync(Func<Task> onAfterRender)
-        {
-            _onAfterRender = onAfterRender;
-            return InvokeStateHasChangedAsync();
-        }
-
-        
     }
 }

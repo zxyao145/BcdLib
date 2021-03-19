@@ -10,6 +10,5 @@
         public static string MinResetStyle = $"{Prefix}.minResetStyle";
         public static string MaxResetStyle = $"{Prefix}.maxResetStyle";
         public static string NormalResetStyle = $"{Prefix}.normalResetStyle";
-        
     }
 }
