@@ -80,7 +80,10 @@ namespace BcdLib
         {
             foreach (var form in _forms)
             {
-                await form.AfterRenderAsync();
+                if (form.ShouldReRender)
+                {
+                    await form.AfterRenderAsync();
+                }
             }
             await base.OnAfterRenderAsync(firstRender);
         }
