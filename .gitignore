@@ -338,3 +338,8 @@ ASALocalRun/
 
 # BeatPulse healthcheck temp database
 healthchecksdb
+/BcdLib/wwwroot/index.css
+/BcdLib/wwwroot/index.css.map
+/BcdLib/wwwroot/index.js
+/BcdLib/wwwroot/index.js.map
+/BcdLib/wwwroot/package-lock.json
