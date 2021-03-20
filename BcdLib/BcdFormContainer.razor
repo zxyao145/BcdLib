@@ -19,10 +19,11 @@
                     dict[form.MinPosition] += 1;
                 }
 
-                <div id="@form.Name" @key="form" class="bcd-form-root @form.GetFormState()" style="@form.GetStyle()">
+                <div id="@form.Name" @key="@form.Name" class="bcd-form-root @form.GetFormState()" style="@form.GetStyle()">
                     @if (form.ShowMask)
                     {
-                        <div class="bcd-form-mask @form.MaskStyle"></div>
+                        <div class="bcd-form-mask" style=" @form.MaskStyle "
+                         @onclick="@(async () => { await CloseFormAsync(form); })"></div>
                     }
                 <div class="bcd-form @minCls" style=" @form.GetFormStyle() ">
                     <div class="bcd-form-content">
