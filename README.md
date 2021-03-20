@@ -5,6 +5,8 @@ var form = new Component();
 await form.ShowAsync();
 ```
 
+[Live Demo](https://zxyao145.github.io/BcdLib/)
+
 [![Nuget](https://img.shields.io/nuget/v/BcdLib)](https://www.nuget.org/packages/BcdLib/)
 
 # 1.Usage
@@ -78,6 +80,10 @@ Jsut like using winform:
 var form = new BcdFormChild();
 await form.ShowAsync();
 ```
+
+## 1.6.Examples
+
+See **BcdSample.Common/BcdForms** for examples.
 
 # 2.BcdForm properties
 
