@@ -23,7 +23,7 @@
                     @if (form.ShowMask)
                     {
                         <div class="bcd-form-mask" style=" @form.MaskStyle "
-                         @onclick="@(async () => { await CloseFormAsync(form); })"></div>
+                         @onclick="@(async () => { if(form.MaskClosable) {await CloseFormAsync(form);} })"></div>
                     }
                 <div class="bcd-form @minCls" style=" @form.GetFormStyle() ">
                     <div class="bcd-form-content">

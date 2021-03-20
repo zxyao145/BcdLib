@@ -66,9 +66,9 @@ namespace BcdLib
         public bool ShowMask { get; set; }
 
         /// <summary>
-        /// Whether to close the modal dialog when the mask (area outside the modal) is clicked
+        /// Whether to close the form when the mask is clicked, if ShowMask is true.
         /// </summary>
-        public bool MaskClosable { get; set; }
+        public bool MaskClosable { get; set; } = true;
 
         /// <summary>
         /// the style of Mask, if <paramref name="ShowMask"/> is true.

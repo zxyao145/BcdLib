@@ -97,6 +97,7 @@ See **BcdSample.Common/BcdForms** for examples.
 | DestroyOnClose | bool        | Remove from DOM when closing. <br/>If  DestroyOnClose is false, be sure to use a global variable to accept the instance of BcdForm | true                    |
 | EnableHeader   | bool        | Allow header to be displayed                                 | true                    |
 | ShowMask       | bool        | Allow Mask to be displayed. Default is false                 | false                   |
+| MaskClosable   | bool        | Whether to close the form when the mask is clicked, if ShowMask is true. | true                    |
 | MaskStyle      | string      | the style of Mask, if ShowMask is true.                      | null                    |
 | MinimizeBox    | bool        | Allow minimization                                           | true                    |
 | MinimizeBox    | bool        | Allow maximum                                                | true                    |
