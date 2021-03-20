@@ -22,7 +22,7 @@
                 <div id="@form.Name" @key="@form.Name" class="bcd-form-root @form.GetFormState()" style="@form.GetStyle()">
                     @if (form.ShowMask)
                     {
-                        <div class="bcd-form-mask" style=" @form.MaskStyle "
+                        <div class="bcd-form-mask @(form.IsNormal() ? "":"bcd-form-mask-hidden") " style=" @form.MaskStyle "
                          @onclick="@(async () => { if(form.MaskClosable) {await CloseFormAsync(form);} })"></div>
                     }
                 <div class="bcd-form @minCls" style=" @form.GetFormStyle() ">
