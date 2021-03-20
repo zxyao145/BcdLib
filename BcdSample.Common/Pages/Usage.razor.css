@@ -1,0 +1,27 @@
+﻿::deep section pre {
+    padding: 16px;
+    overflow: auto;
+    font-size: 85%;
+    line-height: 1.45;
+    background-color: #f6f8fa;
+    border-radius: 6px;
+}
+
+
+::deep section table {
+    display: block;
+    overflow: auto;
+}
+
+::deep section table tr {
+    background-color: #fff;
+    border-top: 1px solid #c6cbd1;
+}
+
+::deep section table tr:nth-child(2n) { background-color: #f6f8fa; }
+
+::deep section td,
+::deep section th {
+    padding: 13px;
+    border: 1px solid #dfe2e5;
+}

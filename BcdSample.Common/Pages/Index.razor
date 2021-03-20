@@ -1,0 +1,88 @@
+﻿@page "/"
+@using BcdSample.Common.BcdForms
+
+
+<button @onclick="OpenABcdForm">Basic</button>
+
+<button @onclick="MinLeft">MinLeftBottom</button>
+
+<button @onclick="LifeCycle">LifeCycle</button>
+
+<button @onclick="Draggable">Draggable</button>
+
+<button @onclick="DisableHeader">DisableHeader</button>
+
+<button @onclick="CallJs">CallJs</button>
+
+<button @onclick="Mask">Mask</button>
+
+@code
+{
+    BcdForm _basic = null;
+
+    async void OpenABcdForm()
+    {
+        if (_basic == null)
+        {
+            _basic = new Basic();
+            await _basic.ShowAsync();
+        }
+        else
+        {
+            // trigger
+            if (_basic.Visible)
+            {
+                await _basic.CloseAsync();
+            }
+            else
+            {
+                await _basic.ShowAsync();
+            }
+        }
+    }
+
+
+    async Task MinLeft()
+    {
+        var form = new MinLeft();
+        await form.ShowAsync();
+    }
+
+    BcdForm lifeCycleForm = null;
+    async Task LifeCycle()
+    {
+        if (lifeCycleForm == null)
+        {
+            // destroy = false,
+            // using a global variable to accept the instance
+            lifeCycleForm = new LifeCycle();
+        }
+
+        await lifeCycleForm.ShowAsync();
+    }
+
+    async Task Draggable()
+    {
+        var form = new Draggable();
+        await form.ShowAsync();
+    }
+
+    async Task DisableHeader()
+    {
+        var form = new DisableHeader();
+        await form.ShowAsync();
+    }
+
+    async Task CallJs()
+    {
+        var form = new CallJs();
+        await form.ShowAsync();
+    }
+
+    async Task Mask()
+    {
+        var form = new Mask();
+        await form.ShowAsync();
+    }
+
+}

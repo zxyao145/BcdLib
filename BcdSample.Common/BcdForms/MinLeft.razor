@@ -1,0 +1,17 @@
+﻿@inherits BcdForm
+
+<h3>MinLeft</h3>
+
+<div>
+    The width of this form is changed to 300px
+</div>
+
+@code {
+
+    protected override void InitComponent()
+    {
+        base.Title = "MinLeft";
+        base.MinPosition = MinPosition.LeftBottom;
+        base.Width = 300;
+    }
+}

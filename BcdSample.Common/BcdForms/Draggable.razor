@@ -1,0 +1,12 @@
+﻿@inherits BcdForm
+
+<h3>Draggable</h3>
+
+@code {
+    protected override void InitComponent()
+    {
+        base.Title = "Draggable Form";
+        base.Draggable = true;
+        base.DragInViewport = true;
+    }
+}
