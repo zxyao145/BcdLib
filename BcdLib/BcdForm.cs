@@ -231,7 +231,7 @@ namespace BcdLib
 
         protected abstract void InitComponent();
 
-        public bool HasDestroyed { get; protected set; } = true;
+        public bool HasDestroyed { get; private set; } = true;
 
         internal string GetHeaderCls()
         {
@@ -385,6 +385,7 @@ namespace BcdLib
             {
                 LastState = _formState;
                 _formState = value;
+                ShouldReRender = true;
             }
         }
 
@@ -400,8 +401,11 @@ namespace BcdLib
         /// </summary>
         public void Min()
         {
-            FormState = FormState.Min;
-            BcdFormContainer.MinFormCount += 1;
+            if (!IsMin())
+            {
+                FormState = FormState.Min;
+                BcdFormContainer.MinFormCount += 1;
+            }
         }
 
         /// <summary>
@@ -409,12 +413,15 @@ namespace BcdLib
         /// </summary>
         public void Max()
         {
-            if (IsMin())
+            if (!IsMax())
             {
-                BcdFormContainer.MinFormCount -= 1;
-            }
+                if (IsMin())
+                {
+                    BcdFormContainer.MinFormCount -= 1;
+                }
 
-            FormState = FormState.Max;
+                FormState = FormState.Max;
+            }
         }
 
         /// <summary>
@@ -422,12 +429,15 @@ namespace BcdLib
         /// </summary>
         public void Restore()
         {
-            if (IsMin())
+            if (!IsNormal())
             {
-                BcdFormContainer.MinFormCount -= 1;
-            }
+                if (IsMin())
+                {
+                    BcdFormContainer.MinFormCount -= 1;
+                }
 
-            FormState = FormState.Normal;
+                FormState = FormState.Normal;
+            }
         }
 
         /// <summary>
