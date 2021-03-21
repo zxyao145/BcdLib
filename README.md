@@ -104,6 +104,8 @@ See **BcdSample.Common/BcdForms** for examples.
 | Draggable      | bool        | Allow drag                                                   | false                   |
 | DragInViewport | bool        | Drag is only allowed in the viewport, if Draggable is true.  | true                    |
 | Visible        | bool        | **Only can get**. Whether the form is visible or not         | --                      |
+| HasDestroyed   | bool        | **Only can get**. Whether the form has been removed from DOM | true                    |
+| FormState      | FormState   | **Only can get**. The form's state: maximize, minimize or normalize | FormState.Normal        |
 
 # 3.OS Reference
 

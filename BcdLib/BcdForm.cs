@@ -228,9 +228,23 @@ namespace BcdLib
         public bool Visible { get; private set; }
 
         /// <summary>
-        /// Whether the form is removed from DOM
+        /// Whether the form has been removed from DOM
         /// </summary>
         public bool HasDestroyed { get; private set; } = true;
+
+        /// <summary>
+        /// The form's state: maximize, minimize or normalize
+        /// </summary>
+        public FormState FormState
+        {
+            get => _formState;
+            private set
+            {
+                LastState = _formState;
+                _formState = value;
+                ShouldReRender = true;
+            }
+        }
 
         #endregion
 
@@ -362,7 +376,7 @@ namespace BcdLib
                     }
                     await BcdFormContainer.BcdFormContainerInstance.RemoveFormAsync(this);
 
-                    await InvokeStateHasChangedAsync();
+                    //await InvokeStateHasChangedAsync();
                 }
             }
         }
@@ -377,20 +391,6 @@ namespace BcdLib
         private FormState LastState { get; set; }
 
         private FormState _formState;
-
-        /// <summary>
-        /// form's state: maximize, minimize or normalize
-        /// </summary>
-        public FormState FormState
-        {
-            get => _formState;
-            private set
-            {
-                LastState = _formState;
-                _formState = value;
-                ShouldReRender = true;
-            }
-        }
 
         internal string GetFormState()
         {
