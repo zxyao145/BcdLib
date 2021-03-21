@@ -56,6 +56,7 @@ namespace BcdLib
                 _forms.Remove(bcdForm);
                 _form2Compontents.Remove(bcdForm);
                 await bcdForm.AfterRenderAsync();
+                bcdForm.Dispose();
                 await InvokeAsync(StateHasChanged);
             }
         }

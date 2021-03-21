@@ -14,10 +14,25 @@ namespace BcdLib
     {
         public const string Prefix = "bcd-form";
 
+        /// <summary>
+        /// IServiceScope for accept dependent injection services.
+        /// <para>
+        ///     If you <b>use</b> ServiceScope in the subclass, note that it will be released at Dispose.
+        /// </para>
+        /// <para>
+        ///     If you <b>don't use</b> ServiceScope in the subclass, you can still use <c>ShowAsync</c> after Disposed
+        /// </para>
+        /// </summary>
         protected readonly IServiceScope ServiceScope;
+
+        /// <summary>
+        /// IServiceProvider for accept dependent injection services.
+        /// </summary>
+        protected readonly IServiceProvider ServiceProvider;
 
         protected BcdForm()
         {
+            ServiceProvider = BcdServices.ServiceProvider;
             ServiceScope = BcdServices.ServiceProvider.CreateScope();
             InitComponent();
         }

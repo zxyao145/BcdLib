@@ -14,7 +14,6 @@
     protected override void InitComponent()
     {
         base.Title = "life cycle";
-        base.DestroyOnClose = false;
         Console.WriteLine("InitComponent");
     }
 
@@ -41,4 +40,11 @@
         Console.WriteLine("AfterBcdRenderAsync");
         return base.AfterBcdRenderAsync(firstRender);
     }
+
+    protected override void Dispose(bool disposing)
+    {
+        Console.WriteLine("Dispose");
+        base.Dispose(disposing);
+    }
+
 }
