@@ -223,15 +223,18 @@ namespace BcdLib
         }
 
         /// <summary>
-        /// 
+        /// Whether the form is visible or not
         /// </summary>
         public bool Visible { get; private set; }
+
+        /// <summary>
+        /// Whether the form is removed from DOM
+        /// </summary>
+        public bool HasDestroyed { get; private set; } = true;
 
         #endregion
 
         protected abstract void InitComponent();
-
-        public bool HasDestroyed { get; private set; } = true;
 
         internal string GetHeaderCls()
         {
