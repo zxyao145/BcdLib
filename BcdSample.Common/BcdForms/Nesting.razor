@@ -1,4 +1,5 @@
 ﻿@inherits BcdForm
+@using BcdSample.Common.Nesting
 
 <h3>Nesting</h3>
 
@@ -9,6 +10,7 @@
         You cannot promote the contents of NestingRoot component to Nesting component.
         Because @@bind is used in the NestingRoot component
     </section>
+    <br/>
     <section>
         or
         &lt;div&gt;
@@ -19,7 +21,8 @@
         &lt;hr /&gt;
     </section>
 </div>
-<BcdSample.Common.Nesting.NestingRoot />
+
+<NestingRoot />
 
 @code
 {

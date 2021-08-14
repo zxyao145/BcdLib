@@ -4,7 +4,7 @@
 		<TargetFramework>net5.0</TargetFramework>
 		<AssemblyVersion>1.0.0.0</AssemblyVersion>
 		<FileVersion>1.0.0.0</FileVersion>
-		<Version>0.1.4</Version>
+		<Version>0.2.0</Version>
 		<PackageId>BcdLib</PackageId>
 		<Authors>zxyao</Authors>
 		<PackageTags>BcdLib;blazor;BcdForm</PackageTags>
@@ -19,6 +19,11 @@
 	<ItemGroup>
 		<PackageReference Include="Microsoft.AspNetCore.Components" Version="5.0.4" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="5.0.4" />
+	</ItemGroup>
+
+
+	<ItemGroup>
+	  <Folder Include="Properties\" />
 	</ItemGroup>
 
 	<PropertyGroup Condition=" '$(Configuration)' == 'Release' ">

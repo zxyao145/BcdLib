@@ -85,9 +85,17 @@ await form.ShowAsync();
 
 See **BcdSample.Common/BcdForms** for examples.
 
-# 2.BcdForm members
+# 2. **Be careful!** 
 
-## 2.1.Public properties
+You **cannot** interact with child components in the root component that inherits BcdForm (**only limit to the root component**), such as **EventCallback or @bind**. 
+
+But you can **using Action or Func instead of EventCallback**, because Action or Func do not need a RenderHandler.
+
+Demo see `BcdLib/BcdSample.Common/BcdForms/Nesting.razor`.
+
+# 3.BcdForm members
+
+## 3.1.Public properties
 
 | Property           | Type        | Summary                                                      | Default                 |
 | ------------------ | ----------- | ------------------------------------------------------------ | ----------------------- |
@@ -109,7 +117,7 @@ See **BcdSample.Common/BcdForms** for examples.
 | **HasDestroyed**   | bool        | **Only can get**. Whether the form has been removed from DOM | true                    |
 | **FormState**      | FormState   | **Only can get**. The form's state: maximize, minimize or normalize | FormState.Normal        |
 
-## 2.2.Protected properties
+## 3.2.Protected properties
 
 | Property            | Type             | Summary                                                      | Default |
 | ------------------- | ---------------- | ------------------------------------------------------------ | ------- |
@@ -117,7 +125,7 @@ See **BcdSample.Common/BcdForms** for examples.
 | **ServiceProvider** | IServiceProvider | **readonly**. IServiceProvider for accept dependent injection services. | --      |
 | **IsDisposed**      | bool             | **readonly**. Has the object been released                   | false   |
 
-## 2.3.Life cycle
+## 3.3.Life cycle
 
 | Name                                                     | Type               | Summary                                                      | parameters                                               | return       |
 | -------------------------------------------------------- | ------------------ | ------------------------------------------------------------ | -------------------------------------------------------- | ------------ |
@@ -133,11 +141,11 @@ See **BcdSample.Common/BcdForms** for examples.
 | **AfterBcdRenderAsync(bool firstRender)**                | protected virtual  | it will trigger in OnAfterRenderAsync                        | **firstRender**: Is the form rendered for the first time | Task         |
 | **Dispose(bool disposing)**                              | protected virtual  | dispose resources                                            | **disposing**: true to dispose the form's resources      | void         |
 
-# 3.OS Reference
+# 4.OS Reference
 
 1. **AntDesign**: form's style
 2. **EventUtil**: [gist](https://gist.github.com/SteveSandersonMS/8a19d8e992f127bb2d2a315ec6c5a373) , author: [SteveSandersonMS](https://github.com/SteveSandersonMS/)
 
-# 4.License
+# 5.License
 [![BcdLib GitHub license](https://img.shields.io/github/license/zxyao145/BcdLib)](https://github.com/zxyao145/BcdLib/blob/main/LICENSE)
 
