@@ -1,0 +1,25 @@
+﻿<h3>ComponentLevel1</h3>
+<div>bind-count: @count</div>
+<button @onclick="OnClick">CalcCountIsEvent</button>
+
+
+<ComponentLevel2 @bind-Count="count"></ComponentLevel2>
+@code
+{
+    int count = 0;
+
+    [Parameter]
+    public bool IsEvent { get; set; }
+
+    [Parameter]
+    public EventCallback<bool> IsEventChanged { get; set; }
+
+    async Task OnClick()
+    {
+        IsEvent = count % 2 == 0;
+        if (IsEventChanged.HasDelegate)
+        {
+            await IsEventChanged.InvokeAsync(IsEvent);
+        }
+    }
+}

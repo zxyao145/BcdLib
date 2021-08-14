@@ -61,6 +61,9 @@ class Dragger {
             - this._container.offsetHeight - 1;
         state.domMaxX = document.documentElement.clientWidth
             - this._container.offsetWidth - 1;
+        state.domMaxY = state.domMaxY < 0 ? 0 : state.domMaxY;
+        state.domMaxX = state.domMaxX < 0 ? 0 : state.domMaxX;
+
 
         if (this._isFirst) {
             this._container.style.left = left + 'px';
@@ -130,6 +133,9 @@ class Dragger {
             - this._container.offsetHeight - 1;
         state.domMaxX = document.documentElement.clientWidth
             - this._container.offsetWidth - 1;
+        state.domMaxY = state.domMaxY < 0 ? 0 : state.domMaxY;
+        state.domMaxX = state.domMaxX < 0 ? 0 : state.domMaxX;
+
         state.domStartY = parseInt(this._container.style.top);
         state.domStartX = parseInt(this._container.style.left);
         if (state.domStartY > state.domMaxY) {

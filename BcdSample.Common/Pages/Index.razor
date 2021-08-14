@@ -16,6 +16,8 @@
 
 <button @onclick="Mask">Mask</button>
 
+<button @onclick="OpenNestingBcdForm">Nesting</button>
+
 @code
 {
     BcdForm _basic = null;
@@ -85,4 +87,9 @@
         await form.ShowAsync();
     }
 
+    async Task OpenNestingBcdForm()
+    {
+        var form = new Nesting();
+        await form.ShowAsync();
+    }
 }

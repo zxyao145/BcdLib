@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
@@ -28,6 +26,9 @@ namespace BcdLib
         private readonly HashSet<BcdForm> _forms;
         private readonly Dictionary<BcdForm, RenderFragment> _form2Compontents;
         private readonly FieldInfo _innerRenderFragmentFieldInfo;
+        private readonly FieldInfo _renderHandleFieldInfo;
+        private readonly RenderHandle _renderHandle;
+
 
         /// <summary>
         /// 
@@ -39,6 +40,12 @@ namespace BcdLib
         {
             var type = typeof(ComponentBase);
             _innerRenderFragmentFieldInfo = type.GetField("_renderFragment", BindingFlags.NonPublic | BindingFlags.Instance);
+            _renderHandleFieldInfo = type.GetField("_renderHandle", BindingFlags.NonPublic | BindingFlags.Instance);
+            var thisRenderHandle = _renderHandleFieldInfo.GetValue(this);
+            if (thisRenderHandle is RenderHandle)
+            {
+                _renderHandle =(RenderHandle) thisRenderHandle;
+            }
             BcdFormContainerInstance = this;
             _forms = new HashSet<BcdForm>();
             _form2Compontents = new Dictionary<BcdForm, RenderFragment>();

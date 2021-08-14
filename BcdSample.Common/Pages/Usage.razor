@@ -165,5 +165,11 @@ await form.ShowAsync();
             </tbody>
         </table>
     </section>
+    
+    <section>
+        <strong>Be careful!</strong>
+        You cannot interact with child components in the root component that inherits BcdForm, such as EventCallback or @@bind.
+        But you can using Action or Func instead of EventCallback, because Action or Func do not need a RenderHandler.
+    </section>
 </div>
 

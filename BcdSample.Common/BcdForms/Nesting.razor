@@ -1,0 +1,39 @@
+﻿@inherits BcdForm
+
+<h3>Nesting</h3>
+
+
+<div>
+    <section>
+        <strong>Be Careful!</strong>
+        You cannot promote the contents of NestingRoot component to Nesting component.
+        Because @@bind is used in the NestingRoot component
+    </section>
+    <section>
+        or
+        &lt;div&gt;
+        ComponentLevel1WithFunc: @@isEvent
+
+        &lt;BcdSample.Common.Nesting.ComponentLevel1WithFunc IsEventChanged="@@IsEventChanged" /&gt;
+        &lt;/div&gt;
+        &lt;hr /&gt;
+    </section>
+</div>
+<BcdSample.Common.Nesting.NestingRoot />
+
+@code
+{
+    private bool isEvent = true;
+
+    protected override void InitComponent()
+    {
+        this.Title = "Nesting";
+        this.Draggable = true;
+    }
+
+    private async Task IsEventChanged(bool e)
+    {
+        this.isEvent = e;
+        await InvokeStateHasChangedAsync();
+    }
+}

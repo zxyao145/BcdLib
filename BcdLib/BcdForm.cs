@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
@@ -39,7 +38,10 @@ namespace BcdLib
 
         protected BcdForm(string name) : this()
         {
-            this.Name = name;
+            if (!string.IsNullOrWhiteSpace(name))
+            {
+                this.Name = name;
+            }
         }
 
         #region form properties
@@ -529,7 +531,7 @@ namespace BcdLib
             }
             else
             {
-                // TODO 
+                throw new Exception("cannot access IJsRuntime to invoke js");
             }
         }
 
@@ -547,9 +549,17 @@ namespace BcdLib
             }
             else
             {
-                // TODO
-                return await new ValueTask<T>(default(T));
+                throw new Exception("cannot access IJsRuntime to invoke js");
             }
+        }
+
+        /// <summary>
+        /// this hides StateHasChanged in ComponentBase,
+        /// and it is implemented internally through <c>InvokeStateHasChanged</c> method
+        /// </summary>
+        protected new void StateHasChanged()
+        {
+            InvokeStateHasChanged();
         }
 
         /// <summary>
