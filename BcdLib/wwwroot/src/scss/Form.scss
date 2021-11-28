@@ -84,7 +84,7 @@ $tool-hover-color: rgba(0, 0, 0, .75) ;
             border-bottom: 1px solid #{$header-border-bottom-color};
             border-radius: 2px 2px 0 0;
             display: flex;
-
+			user-select:none;
 
             .#{$prefix-cls}-title {
                 padding: 12px 12px;
@@ -197,7 +197,10 @@ $tool-hover-color: rgba(0, 0, 0, .75) ;
 
 
 .#{$prefix-cls}-min {
-    position: absolute;
+    position: fixed;
+    z-index: 999;
+    top: auto !important;
+    left: auto !important;
 
     .bcd-form-min-btn {
         pointer-events: none;

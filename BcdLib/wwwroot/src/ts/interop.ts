@@ -3,7 +3,7 @@
 } from "./dragHelper";
 
 import { autoDebug } from "./global";
-import { getDom, attr } from "./core/base";
+import { getDom, attr, css, addCls, removeCls } from "./core/base";
 
 
 /**
@@ -61,4 +61,41 @@ export function maxResetStyle(formRoot: string | HTMLElement, lastIsNormal: bool
         form!.style.top = "";
     }
     return lastNormalStyle;
+}
+
+let oldBodyCacheStack: Array<any> = [];
+
+
+const hasScrollbar = () => {
+    let overflow = document.body.style.overflow;
+    if (overflow && overflow === "hidden") return false;
+    return document.body.scrollHeight > (window.innerHeight || document.documentElement.clientHeight);
+}
+
+export function  disableBodyScroll() {
+    let body = document.body;
+    const oldBodyCache = {};
+    ["position", "width", "overflow"].forEach((key) => {
+        oldBodyCache[key] = body.style[key];
+    });
+    oldBodyCacheStack.push(oldBodyCache);
+    css(body,
+        {
+            "position": "relative",
+            "width": hasScrollbar() ? "calc(100% - 17px)" : null,
+            "overflow": "hidden"
+        });
+    addCls(document.body, "ant-scrolling-effect");
+}
+
+export function  enableBodyScroll() {
+    let oldBodyCache = oldBodyCacheStack.length > 0 ? oldBodyCacheStack.pop() : {};
+
+    css(document.body,
+        {
+            "position": oldBodyCache["position"] ?? null,
+            "width": oldBodyCache["width"] ?? null,
+            "overflow": oldBodyCache["overflow"] ?? null
+        });
+    removeCls(document.body, "ant-scrolling-effect");
 }

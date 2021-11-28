@@ -10,5 +10,8 @@
         public static string MinResetStyle = $"{Prefix}.minResetStyle";
         public static string MaxResetStyle = $"{Prefix}.maxResetStyle";
         public static string NormalResetStyle = $"{Prefix}.normalResetStyle";
+
+        public static string DisableBodyScroll = $"{Prefix}.disableBodyScroll";
+        public static string EnableBodyScroll = $"{Prefix}.enableBodyScroll";
     }
 }

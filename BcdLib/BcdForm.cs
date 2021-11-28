@@ -9,9 +9,11 @@ using BcdLib.Extensions;
 
 namespace BcdLib
 {
-    public abstract class BcdForm : ComponentBase, IDisposable
+    public abstract class BcdForm : ComponentBase, IDisposable, IHandleEvent
     {
         public const string Prefix = "bcd-form";
+
+        private IJSRuntime JsRuntime => BcdServices.JsRuntime;
 
         /// <summary>
         /// IServiceScope for accept dependent injection services.
@@ -419,71 +421,84 @@ namespace BcdLib
         /// <summary>
         /// Minimize form
         /// </summary>
-        public void Min()
+        public async Task OnMinBoxClick()
         {
-            if (!IsMin())
-            {
-                FormState = FormState.Min;
-                BcdFormContainer.MinFormCount += 1;
-            }
+            await ChangeFormStateAsync(FormState.Min);
         }
 
         /// <summary>
         /// Maximize form
         /// </summary>
-        public void Max()
+        public async Task OnMaxBoxClick()
         {
-            if (!IsMax())
-            {
-                if (IsMin())
-                {
-                    BcdFormContainer.MinFormCount -= 1;
-                }
-
-                FormState = FormState.Max;
-            }
+            await ChangeFormStateAsync(FormState.Max);
         }
 
-        /// <summary>
-        /// Restore form
-        /// </summary>
-        public void Restore()
+        private static readonly Func<BcdForm, Task>[][] _stateChangeFunc = new Func<BcdForm, Task>[][]
         {
-            if (!IsNormal())
+            // normal to others
+            new Func<BcdForm,Task>[]
             {
-                if (IsMin())
+                (form) => Task.CompletedTask,
+                (form) =>
                 {
+                    form.FormState = FormState.Min;
+                    BcdFormContainer.MinFormCount += 1;
+                    return Task.CompletedTask;
+                },
+                async (form) =>
+                {
+                    form.FormState = FormState.Max;
+                    await form.JsRuntime.InvokeVoidAsync(JsInteropConstants.DisableBodyScroll);
+                }
+            },
+            // min to others
+            new Func<BcdForm,Task>[]
+            {
+                (form) => Task.CompletedTask,
+                (form) => Task.CompletedTask,
+                async (form) =>
+                {
+                    // restore
                     BcdFormContainer.MinFormCount -= 1;
+                    if (form.LastState.IsNormal())
+                    {
+                        form.FormState = FormState.Normal;
+                    }
+                    else if (form.LastState.IsMax())
+                    {
+                        form.FormState = FormState.Max;
+                        await form.JsRuntime.InvokeVoidAsync(JsInteropConstants.DisableBodyScroll);
+                    }
+                    else
+                    {
+                        BcdFormContainer.MinFormCount += 1;
+                    }
                 }
+            },
+            // max to others
+            new Func<BcdForm,Task>[]
+            {
+                (form) => Task.CompletedTask,
+                async (form) =>
+                {
+                    form.FormState = FormState.Min;
+                    BcdFormContainer.MinFormCount += 1;
+                    await form.JsRuntime.InvokeVoidAsync(JsInteropConstants.EnableBodyScroll);
+                },
+                // max -> max == normal
+                async (form) =>
+                {
+                    form.FormState = FormState.Normal;
+                    await form.JsRuntime.InvokeVoidAsync(JsInteropConstants.EnableBodyScroll);
+                }
+            },
+        };
 
-                FormState = FormState.Normal;
-            }
-        }
-
-        /// <summary>
-        /// Trigger Max or Restore
-        /// </summary>
-        internal void TriggerMaxBox()
+        private async Task ChangeFormStateAsync(FormState state)
         {
-            if (IsMax())
-            {
-                Restore();
-            }
-            else if (IsMin())
-            {
-                if (LastState.IsNormal())
-                {
-                    Restore();
-                }
-                else
-                {
-                    Max();
-                }
-            }
-            else
-            {
-                Max();
-            }
+            Func<BcdForm, Task> func = _stateChangeFunc[(int)FormState][(int)state];
+            await func(this);
         }
 
         /// <summary>
@@ -624,6 +639,8 @@ namespace BcdLib
         }
 
         #endregion
+
+        Task IHandleEvent.HandleEventAsync(EventCallbackWorkItem item, object? arg) => item.InvokeAsync(arg);
 
         internal async Task AfterRenderAsync()
         {

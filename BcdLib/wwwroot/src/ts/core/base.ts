@@ -46,10 +46,54 @@ const attr = (selector: string | Element, key: string, value: string | null = nu
     return null;
 }
 
+const addCls = (selector: Element | string, className: string | Array<string>) => {
+    let element = getDom(selector);
+    if (element) {
+        if (typeof className === "string") {
+            element.classList.add(className);
+        } else {
+            element.classList.add(...className);
+        }
+    }
+}
+
+const removeCls = (selector: Element | string, clsName: string | Array<string>) => {
+    let element = getDom(selector);
+    if (element) {
+        if (typeof clsName === "string") {
+            element.classList.remove(clsName);
+        } else {
+            element.classList.remove(...clsName);
+        }
+    }
+}
+
+const css = (element: HTMLElement, name: string | object, value: string | null = null) => {
+    if (typeof name === 'string') {
+        if (value === null) {
+            let style = name;
+            let cssAttributes = style.split(";");
+            for (let i = 0; i < cssAttributes.length; i++) {
+                let cssAttribute = cssAttributes[i];
+                if (!cssAttribute) continue;
+                let attribute = cssAttribute.split(":");
+                element.style.setProperty(attribute[0], attribute[1]);
+            }
+            return;
+        }
+        element.style.setProperty(name, value);
+    } else {
+        for (let key in name) {
+            if (name.hasOwnProperty(key)) {
+                element.style.setProperty(key, name[key]);
+            }
+        }
+    }
+}
 
 const $ = getDom;
 
 export default $;
 export {
-    throttle, getDom, $, attr
+    throttle, getDom, $, attr, addCls, removeCls, css
 };
