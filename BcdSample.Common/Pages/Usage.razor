@@ -26,7 +26,7 @@
         <pre><code class="language-c#">public static void Main(string[] args)
 {
     var host = CreateHostBuilder(args).Build();
-+    host.Services.AddBcdService();
++    host.Services.UseBcdForm();
     host.Run();
 }
 </code></pre>
@@ -37,7 +37,7 @@
 	builder.RootComponents.Add&lt;App&gt;(&quot;#app&quot;);
 		...
 	var host = builder.Build();
-+	host.Services.AddBcdService();
++	host.Services.UseBcdForm();
 	await host.RunAsync();
 }
 </code></pre>

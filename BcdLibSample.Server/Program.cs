@@ -9,7 +9,7 @@ namespace BcdLibSample
         public static void Main(string[] args)
         {
             var host = CreateHostBuilder(args).Build();
-            host.Services.AddBcdService();
+            host.Services.UseBcdForm();
             host.Run();
         }
 

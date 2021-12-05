@@ -38,10 +38,6 @@
 		</DefaultItemExcludes>
 	</PropertyGroup>
 
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-	  <DocumentationFile></DocumentationFile>
-	</PropertyGroup>
-
 	<Target Name="RunGulp" BeforeTargets="Build">
 		<Exec WorkingDirectory="wwwroot" Command="gulp" />
 	</Target>

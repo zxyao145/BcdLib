@@ -7,11 +7,10 @@ using Microsoft.JSInterop;
 using BcdLib.Core;
 using BcdLib.Extensions;
 using Microsoft.AspNetCore.Components.Rendering;
-using IComponent = Microsoft.AspNetCore.Components.IComponent;
 
 namespace BcdLib
 {
-    public abstract class BcdForm : IComponent, IDisposable
+    public abstract class BcdForm : IDisposable
     {
         public const string Prefix = "bcd-form";
 
@@ -293,40 +292,6 @@ namespace BcdLib
 
 
         internal RenderFragment RenderFragment { get; init; }
-
-
-        #region interface implement
-
-        private RenderHandle _renderHandle;
-
-        /// <inheritdoc />
-        public void Attach(RenderHandle renderHandle)
-        {
-            if (_renderHandle.IsInitialized)
-            {
-                _renderHandle = renderHandle;
-                throw new InvalidOperationException($"The render handle is already set. Cannot initialize a {nameof(ComponentBase)} more than once.");
-            }
-            _renderHandle = renderHandle;
-        }
-
-        /// <inheritdoc />
-        public Task SetParametersAsync(ParameterView parameters)
-        {
-            if (_firstRender)
-            {
-                _firstRender = false;
-                _renderHandle.Render(RenderFragment);
-            }
-            else if (ShouldReRender)
-            {
-                _renderHandle.Render(RenderFragment);
-            }
-            return Task.CompletedTask;
-        }
-
-        #endregion
-
 
         #region Show
 
