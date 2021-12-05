@@ -8,7 +8,7 @@ namespace BcdLib
 {
     public partial class BcdFormContainer
     {
-        internal static int MinFormCount { get; set; }= 0;
+        internal static int MinFormCount { get; set; } = 0;
 
         internal static BcdFormContainer BcdFormContainerInstance { get; private set; }
 
@@ -25,9 +25,9 @@ namespace BcdLib
 
         private readonly HashSet<BcdForm> _forms;
         private readonly Dictionary<BcdForm, RenderFragment> _form2Compontents;
-        private readonly FieldInfo _innerRenderFragmentFieldInfo;
-        private readonly FieldInfo _renderHandleFieldInfo;
-        private readonly RenderHandle _renderHandle;
+        //private readonly FieldInfo _innerRenderFragmentFieldInfo;
+        //private readonly FieldInfo _renderHandleFieldInfo;
+        //private RenderHandle _renderHandle { get; private set; }
 
 
         /// <summary>
@@ -38,14 +38,15 @@ namespace BcdLib
 
         public BcdFormContainer()
         {
-            var type = typeof(ComponentBase);
-            _innerRenderFragmentFieldInfo = type.GetField("_renderFragment", BindingFlags.NonPublic | BindingFlags.Instance);
-            _renderHandleFieldInfo = type.GetField("_renderHandle", BindingFlags.NonPublic | BindingFlags.Instance);
-            var thisRenderHandle = _renderHandleFieldInfo.GetValue(this);
-            if (thisRenderHandle is RenderHandle)
-            {
-                _renderHandle =(RenderHandle) thisRenderHandle;
-            }
+            //var type = typeof(ComponentBase);
+            //_innerRenderFragmentFieldInfo = type.GetField("_renderFragment", BindingFlags.NonPublic | BindingFlags.Instance);
+            //_renderHandleFieldInfo = type.GetField("_renderHandle", BindingFlags.NonPublic | BindingFlags.Instance);
+            //var thisRenderHandle = _renderHandleFieldInfo.GetValue(this);
+            //if (thisRenderHandle is RenderHandle)
+            //{
+            //    _renderHandle = (RenderHandle)thisRenderHandle;
+            //}
+
             BcdFormContainerInstance = this;
             _forms = new HashSet<BcdForm>();
             _form2Compontents = new Dictionary<BcdForm, RenderFragment>();
@@ -78,7 +79,8 @@ namespace BcdLib
             if (!_forms.Contains(bcdForm))
             {
                 _forms.Add(bcdForm);
-                RenderFragment value = _innerRenderFragmentFieldInfo.GetValue(bcdForm) as RenderFragment;
+                //bcdForm.Attach(_renderHandle);
+                RenderFragment value = bcdForm.RenderFragment; //_innerRenderFragmentFieldInfo.GetValue(bcdForm) as RenderFragment;
                 _form2Compontents.Add(bcdForm, value);
                 await InvokeAsync(StateHasChanged);
             }
@@ -91,10 +93,10 @@ namespace BcdLib
             {
                 if (form.ShouldReRender)
                 {
+                    form.ShouldReRender = false;
                     await form.AfterRenderAsync();
                 }
             }
-            await base.OnAfterRenderAsync(firstRender);
         }
 
         internal void InvokeStateHasChanged()

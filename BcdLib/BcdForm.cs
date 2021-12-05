@@ -6,10 +6,12 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.JSInterop;
 using BcdLib.Core;
 using BcdLib.Extensions;
+using Microsoft.AspNetCore.Components.Rendering;
+using IComponent = Microsoft.AspNetCore.Components.IComponent;
 
 namespace BcdLib
 {
-    public abstract class BcdForm : ComponentBase, IDisposable, IHandleEvent
+    public abstract class BcdForm : IComponent, IDisposable
     {
         public const string Prefix = "bcd-form";
 
@@ -31,15 +33,12 @@ namespace BcdLib
         /// </summary>
         protected readonly IServiceProvider ServiceProvider;
 
-        protected BcdForm()
+        protected BcdForm(string name = null)
         {
             ServiceProvider = BcdServices.ServiceProvider;
             ServiceScope = BcdServices.ServiceProvider.CreateScope();
             InitComponent();
-        }
-
-        protected BcdForm(string name) : this()
-        {
+            RenderFragment = builder => BuildRenderTree(builder);
             if (!string.IsNullOrWhiteSpace(name))
             {
                 this.Name = name;
@@ -267,7 +266,6 @@ namespace BcdLib
 
         #endregion
 
-        protected abstract void InitComponent();
 
         internal string GetHeaderCls()
         {
@@ -292,6 +290,43 @@ namespace BcdLib
 
         private string _lastNormal;
         private bool _firstRender = true;
+
+
+        internal RenderFragment RenderFragment { get; init; }
+
+
+        #region interface implement
+
+        private RenderHandle _renderHandle;
+
+        /// <inheritdoc />
+        public void Attach(RenderHandle renderHandle)
+        {
+            if (_renderHandle.IsInitialized)
+            {
+                _renderHandle = renderHandle;
+                throw new InvalidOperationException($"The render handle is already set. Cannot initialize a {nameof(ComponentBase)} more than once.");
+            }
+            _renderHandle = renderHandle;
+        }
+
+        /// <inheritdoc />
+        public Task SetParametersAsync(ParameterView parameters)
+        {
+            if (_firstRender)
+            {
+                _firstRender = false;
+                _renderHandle.Render(RenderFragment);
+            }
+            else if (ShouldReRender)
+            {
+                _renderHandle.Render(RenderFragment);
+            }
+            return Task.CompletedTask;
+        }
+
+        #endregion
+
 
         #region Show
 
@@ -326,7 +361,7 @@ namespace BcdLib
                     HasDestroyed = false;
                     await BcdFormContainer.BcdFormContainerInstance.AppendFormAsync(this);
                 }
-                await InvokeStateHasChangedAsync();
+                await StateHasChangedAsync();
             }
         }
 
@@ -381,7 +416,7 @@ namespace BcdLib
             if (Visible)
             {
                 Visible = false;
-                await InvokeStateHasChangedAsync();
+                await StateHasChangedAsync();
 
                 if (DestroyOnClose && !HasDestroyed)
                 {
@@ -569,31 +604,38 @@ namespace BcdLib
         }
 
         /// <summary>
-        /// this hides StateHasChanged in ComponentBase,
-        /// and it is implemented internally through <c>InvokeStateHasChanged</c> method
+        /// it is implemented internally through <c>InvokeStateHasChanged</c> method
         /// </summary>
-        protected new void StateHasChanged()
+        protected void StateHasChanged()
         {
-            InvokeStateHasChanged();
+            BcdFormContainer.BcdFormContainerInstance.InvokeStateHasChanged();
+        }
+
+        /// <summary>
+        /// it is implemented internally through <c>InvokeStateHasChangedAsync</c> method
+        /// </summary>
+        protected Task StateHasChangedAsync()
+        {
+            return BcdFormContainer.BcdFormContainerInstance.InvokeStateHasChangedAsync();
         }
 
         /// <summary>
         /// StateHasChanged adapter
         /// </summary>
+        [Obsolete("replcae this with StateHasChanged()")]
         protected void InvokeStateHasChanged()
         {
-            ShouldReRender = true;
-            BcdFormContainer.BcdFormContainerInstance.InvokeStateHasChanged();
+            StateHasChanged();
         }
 
         /// <summary>
         /// InvokeAsync(StateHasChanged) adapter
         /// </summary>
         /// <returns></returns>
+        [Obsolete("replcae this with StateHasChangedAsync()")]
         protected Task InvokeStateHasChangedAsync()
         {
-            ShouldReRender = true;
-            return BcdFormContainer.BcdFormContainerInstance.InvokeStateHasChangedAsync();
+            return StateHasChangedAsync();
         }
 
         #endregion
@@ -640,7 +682,6 @@ namespace BcdLib
 
         #endregion
 
-        Task IHandleEvent.HandleEventAsync(EventCallbackWorkItem item, object? arg) => item.InvokeAsync(arg);
 
         internal async Task AfterRenderAsync()
         {
@@ -669,8 +710,8 @@ namespace BcdLib
 
 
             // ReSharper disable once MethodHasAsyncOverload
-            AfterBcdRender(_firstRender);
-            await AfterBcdRenderAsync(_firstRender);
+            OnAfterRender(_firstRender);
+            await OnAfterRenderAsync(_firstRender);
             if (_firstRender)
             {
                 _firstRender = false;
@@ -679,20 +720,27 @@ namespace BcdLib
             ShouldReRender = false;
         }
 
+        protected abstract void InitComponent();
+
+        protected virtual void BuildRenderTree(RenderTreeBuilder builder)
+        {
+        }
+
+        
         /// <summary>
         /// it will trigger in OnAfterRenderAsync
         /// </summary>
         /// <param name="firstRender">Is the form rendered for the first time</param>
-        protected virtual void AfterBcdRender(bool firstRender)
+        protected virtual void OnAfterRender(bool firstRender)
         {
         }
+
+
         /// <summary>
         /// it will trigger in OnAfterRenderAsync
         /// </summary>
         /// <param name="firstRender">Is the form rendered for the first time</param>
-        protected virtual Task AfterBcdRenderAsync(bool firstRender)
-        {
-            return Task.CompletedTask;
-        }
+        protected virtual Task OnAfterRenderAsync(bool firstRender) => Task.CompletedTask;
+
     }
 }

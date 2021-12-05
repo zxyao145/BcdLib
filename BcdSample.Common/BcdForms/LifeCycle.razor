@@ -3,8 +3,8 @@
 <h3>bcd form's life cycle</h3>
 
 <div>
-    1. [InitComponent -->] OnShowingAsync --> AfterBcdRender[Async] <br />
-    2. InvokeStateHasChanged[Async] --> AfterBcdRender[Async] <br />
+    1. [InitComponent -->] OnShowingAsync --> OnAfterRender[Async] <br />
+    2. StateHasChanged[Async] --> OnAfterRender[Async] <br />
     3. OnClosingAsync --> OnDestroyingAsync 
     <br /><br />
     <mark>InitComponent</mark> will be triggered before <mark>OnShowingAsync</mark> when the form is not in the DOM.
@@ -35,10 +35,10 @@
         return base.OnDestroyingAsync(e);
     }
 
-    protected override Task AfterBcdRenderAsync(bool firstRender)
+    protected override Task OnAfterRenderAsync(bool firstRender)
     {
-        Console.WriteLine("AfterBcdRenderAsync");
-        return base.AfterBcdRenderAsync(firstRender);
+        Console.WriteLine("OnAfterRenderAsync");
+        return base.OnAfterRenderAsync(firstRender);
     }
 
     protected override void Dispose(bool disposing)

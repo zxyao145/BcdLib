@@ -26,7 +26,7 @@ await form.ShowAsync();
    ...
 </Router>
 
-+ <BcdLibContainer />
++ <BcdFormContainer />
 ```
 
 ## 1.3.Provide IServiceProvider for BcdLib in **Main method** of Program.cs
