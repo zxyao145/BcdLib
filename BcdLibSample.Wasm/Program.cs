@@ -21,7 +21,7 @@ namespace BcdLibSample.Wasm
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
             var host = builder.Build();
-            host.Services.AddBcdService();
+            host.Services.UseBcdForm();
             await host.RunAsync();
         }
     }

@@ -37,6 +37,6 @@
     private async Task IsEventChanged(bool e)
     {
         this.isEvent = e;
-        await InvokeStateHasChangedAsync();
+        await StateHasChangedAsync();
     }
 }

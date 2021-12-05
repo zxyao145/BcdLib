@@ -47,7 +47,7 @@
                                         </button>
 
                                         <button class="bcd-form-max-btn" disabled="@(!form.MaximizeBox)"
-                                                @onclick="@(async () => { form.OnMaxBoxClick(); })"
+                                                @onclick="@(async () => { await form.OnMaxBoxClick(); })"
                                                 @onclick:stopPropagation="true">
                                             @if (form.IsMax() || form.IsMin())
                                             {
@@ -74,7 +74,7 @@
                                     }
 
                                     <button class="bcd-form-close-btn"
-                                            @onclick="@(EventUtil.AsNonRenderingEventHandler(async () => { await CloseFormAsync(form); }))"
+                                            @onclick="@(async () => { await CloseFormAsync(form); })"
                                             @onclick:stopPropagation="true">
                                         <span class="bcd-form-header-tool bcd-form-icon-close">
                                             <svg t="1610695030046"

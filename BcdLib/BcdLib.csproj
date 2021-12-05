@@ -4,7 +4,7 @@
 		<TargetFramework>net6.0</TargetFramework>
 		<AssemblyVersion>1.0.0.0</AssemblyVersion>
 		<FileVersion>1.0.0.0</FileVersion>
-		<Version>0.3.0</Version>
+		<Version>0.4.0</Version>
 		<PackageId>BcdLib</PackageId>
 		<Authors>zxyao</Authors>
 		<PackageTags>BcdLib;blazor;BcdForm</PackageTags>
@@ -36,10 +36,6 @@
 			wwwroot\package.json;
 			wwwroot\package-lock.json;
 		</DefaultItemExcludes>
-	</PropertyGroup>
-
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-	  <DocumentationFile></DocumentationFile>
 	</PropertyGroup>
 
 	<Target Name="RunGulp" BeforeTargets="Build">

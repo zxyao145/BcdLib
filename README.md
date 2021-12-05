@@ -26,7 +26,7 @@ await form.ShowAsync();
    ...
 </Router>
 
-+ <BcdLibContainer />
++ <BcdFormContainer />
 ```
 
 ## 1.3.Provide IServiceProvider for BcdLib in **Main method** of Program.cs
@@ -36,7 +36,7 @@ For server side:
 public static void Main(string[] args)
 {
     var host = CreateHostBuilder(args).Build();
-+   host.Services.AddBcdService();
++   host.Services.UseBcdForm();
     host.Run();
 }
 ```
@@ -49,7 +49,7 @@ public static async Task Main(string[] args)
 	builder.RootComponents.Add<App>("#app");
 		...
 	var host = builder.Build();
-+	host.Services.AddBcdService();
++	host.Services.UseBcdForm();
 	await host.RunAsync();
 }
 ```
@@ -144,7 +144,6 @@ Demo see `BcdLib/BcdSample.Common/BcdForms/Nesting.razor`.
 # 4.OS Reference
 
 1. **AntDesign**: form's style
-2. **EventUtil**: [gist](https://gist.github.com/SteveSandersonMS/8a19d8e992f127bb2d2a315ec6c5a373) , author: [SteveSandersonMS](https://github.com/SteveSandersonMS/)
 
 # 5.License
 [![BcdLib GitHub license](https://img.shields.io/github/license/zxyao145/BcdLib)](https://github.com/zxyao145/BcdLib/blob/main/LICENSE)

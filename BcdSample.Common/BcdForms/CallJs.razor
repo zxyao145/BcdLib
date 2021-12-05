@@ -8,14 +8,8 @@
         base.Title = "Call Js";
     }
 
-    protected override async Task AfterBcdRenderAsync(bool firstRender)
-    {
-        await JsInvokeVoidAsync("alert", "from AfterBcdRenderAsync");
-    }
-
-    // it will not be trigger
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        await JsInvokeVoidAsync("alert", "from OnAfterRenderAsync");
+        await JsInvokeVoidAsync("alert", "from AfterBcdRenderAsync");
     }
 }
