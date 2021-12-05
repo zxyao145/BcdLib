@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\BcdLib\BcdLib.csproj" />
+    <ProjectReference Include="..\BcdLib\BcdForm.csproj" />
     <ProjectReference Include="..\BcdSample.Common\BcdSample.Common.csproj" />
   </ItemGroup>
 
