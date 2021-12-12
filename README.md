@@ -1,3 +1,9 @@
+# Archive Note
+BcdLib has been **renamed `BcdLib.BcdForm`**. Please to https://github.com/BcdLib/BcdForm learn the latest content of this component.
+
+
+----
+
 Use Blazor like WinForm.  Just new a component and show it like here:
 
 ```c#
